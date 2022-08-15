@@ -9,5 +9,5 @@
 
 ### Docker
 ```bash
-    docker run -p 27027:27027 --name some-mongo -d mongo
+    docker run -p 27017:27017 --name some-mongo -d mongo
 ```
