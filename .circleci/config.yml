@@ -52,7 +52,7 @@ jobs:
       - persist_to_workspace:
           root: persist
           paths:
-            - ['.']
+            - [ '.' ]
 
   downstream-2:
     docker:
