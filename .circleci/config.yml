@@ -43,9 +43,11 @@ jobs:
             echo "Nope!"; exit 1
           fi
 
-          echo "Persist-workspace!" > persist.txt
+          echo "Persist-workspace!" > persist/persist.txt
+          echo "hello-world!" > persist/helloworld.txt
 
       - persist_to_workspace:
+          root: persist
           paths:
             - persist.txt
 
