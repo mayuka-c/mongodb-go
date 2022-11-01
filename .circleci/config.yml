@@ -51,8 +51,7 @@ jobs:
 
       - persist_to_workspace:
           root: persist
-          paths:
-            - [ '.' ]
+          paths: [ '.' ]
 
   downstream-2:
     docker:
