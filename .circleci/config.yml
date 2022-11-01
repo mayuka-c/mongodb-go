@@ -47,6 +47,7 @@ jobs:
 
           echo "Persist-workspace!" > persist/persist.txt
           echo "hello-world!" > persist/helloworld.txt
+          echo "Updated echo-output" > persist/echo-output
 
       - persist_to_workspace:
           root: persist
@@ -61,13 +62,10 @@ jobs:
           at: /tmp/workspace_test
 
       - run: |
-          if [[ `cat /tmp/workspace_test/echo-output` == "Hello, world!" ]]; then
-            echo "It worked!";
-          else
-            echo "Nope!"; exit 1
-          fi
-
           ls -la /tmp/workspace_test
+          cat /tmp/workspace_test/echo-output
+
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
