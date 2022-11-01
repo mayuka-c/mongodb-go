@@ -18,9 +18,40 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
 
+  flow:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: mkdir -p test
+      - run: echo "Hello, world!" > test/echo-output
+      - persist_to_workspace:
+          root: test
+          paths:
+            - echo-output
+
+  downstream:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run: |
+          if [[ `cat /tmp/workspace/echo-output` == "Hello, world!" ]]; then
+            echo "It worked!";
+          else
+            echo "Nope!"; exit 1
+          fi
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+  checkout-workflow:
+    jobs:
+      - flow
+      - downstream:
+          requires:
+            - flow
