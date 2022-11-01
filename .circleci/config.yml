@@ -29,20 +29,42 @@ jobs:
           paths:
             - echo-output
 
-  downstream:
+  downstream-1:
     docker:
       - image: cimg/base:stable
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: /tmp/workspace_test
 
       - run: |
-          if [[ `cat /tmp/workspace/echo-output` == "Hello, world!" ]]; then
+          if [[ `cat /tmp/workspace_test/echo-output` == "Hello, world!" ]]; then
             echo "It worked!";
           else
             echo "Nope!"; exit 1
           fi
 
+          echo "Persist-workspace!" > persist.txt
+
+      - persist_to_workspace:
+          root: ~
+          paths:
+            - persist.txt
+
+  downstream-2:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace_test
+
+      - run: |
+          if [[ `cat /tmp/workspace_test/echo-output` == "Hello, world!" ]]; then
+            echo "It worked!";
+          else
+            echo "Nope!"; exit 1
+          fi
+
+          ls -la /tmp/workspace_test
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
@@ -52,6 +74,9 @@ workflows:
   checkout-workflow:
     jobs:
       - flow
-      - downstream:
+      - downstream-1:
           requires:
             - flow
+      - downstream-2:
+          requires:
+            - downstream-1
