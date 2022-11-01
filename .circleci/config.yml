@@ -46,7 +46,6 @@ jobs:
           echo "Persist-workspace!" > persist.txt
 
       - persist_to_workspace:
-          root: ~
           paths:
             - persist.txt
 
