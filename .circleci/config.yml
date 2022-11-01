@@ -43,6 +43,8 @@ jobs:
             echo "Nope!"; exit 1
           fi
 
+          mkdir -p persist
+
           echo "Persist-workspace!" > persist/persist.txt
           echo "hello-world!" > persist/helloworld.txt
 
